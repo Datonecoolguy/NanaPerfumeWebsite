@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NanaPerfume - Fragrance Boutique</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-purple: #8e44ad;
+            --light-purple: #d2b4de;
+            --gold: #f39c12;
+            --light-gold: #fdebd0;
+            --dark-text: #333;
+            --light-text: #fff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-text);
+        }
+        
+        header {
+            background-color: var(--primary-purple);
+            color: var(--light-text);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .site-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+        
+        nav {
+            background-color: var(--light-purple);
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: var(--gold);
+        }
+        
+        .hero {
+            background-color: var(--light-gold);
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-purple);
+        }
+        
+        .hero p {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--gold);
+            color: var(--dark-text);
+            padding: 0.75rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid var(--primary-purple);
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-purple);
+            color: var(--light-text);
+        }
+        
+        .features {
+            padding: 3rem 1rem;
+            background-color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--primary-purple);
+        }
+        
+        .feature-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: var(--light-purple);
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            line-height: 1.5;
+        }
+        
+        .perfumes {
+            background-color: var(--light-gold);
+            padding: 3rem 1rem;
+        }
+        
+        .perfume-table {
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .perfume-table th, .perfume-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .perfume-table th {
+            background-color: var(--primary-purple);
+            color: var(--light-text);
+        }
+        
+        .perfume-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .perfume-table tr:hover {
+            background-color: var(--light-gold);
+        }
+        
+        /* Fragrance Finder Styles */
+        .fragrance-finder {
+            padding: 3rem 1rem;
+            background-color: #fff;
+        }
+        
+        .finder-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .finder-form {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--light-gold);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .finder-graphic {
+            flex: 1;
+            min-width: 300px;
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fragrance-form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .fragrance-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .fragrance-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .scent-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scent-input label {
+            width: 100px;
+            margin-bottom: 0;
+        }
+        
+        .scent-input input {
+            flex: 1;
+        }
+        
+        .find-btn {
+            background-color: var(--primary-purple);
+            color: var(--light-text);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .find-btn:hover {
+            background-color: var(--gold);
+            color: var(--dark-text);
+        }
+        
+        .result-summary {
+            margin-top: 1.5rem;
+            background-color: var(--light-purple);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .result-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .result-label {
+            font-weight: bold;
+        }
+        
+        .contact {
+            padding: 3rem 1rem;
+            background-color: #fff;
+            text-align: center;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-purple);
+            color: var(--light-text);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--gold);
+            color: var(--dark-text);
+        }
+        
+        footer {
+            background-color: var(--primary-purple);
+            color: var(--light-text);
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 5px solid var(--gold);
+        }
+        
+        .footer-links {
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: var(--light-gold);
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .finder-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">💐</div>
+            <h1 class="site-title">NanaPerfume</h1>
+        </div>
+        <p class="tagline">Discover Your Signature Scent</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Collections</a></li>
+            <li><a href="#perfumes">Perfumes</a></li>
+            <li><a href="#finder">Fragrance Finder</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <section id="home" class="hero">
+        <h2>Welcome to NanaPerfume Boutique</h2>
+        <p>Your ultimate destination for exquisite fragrances that tell your story. Explore our curated collection of premium perfumes, discover new scents, and find the perfect fragrance that resonates with your personality.</p>
+        <a href="#finder" class="cta-button">Find Your Scent</a>
+    </section>
+    
+    <section id="features" class="features">
+        <h2 class="section-title">Our Collections</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="feature-icon">🌸</div>
+                <h3>Floral Collection</h3>
+                <p>Delicate and enchanting floral notes that evoke the beauty of blooming gardens and natural elegance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌲</div>
+                <h3>Woody Collection</h3>
+                <p>Rich and warm woody fragrances that create a sense of comfort and sophistication for any occasion.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🍊</div>
+                <h3>Citrus Collection</h3>
+                <p>Bright and invigorating citrus scents that refresh your senses and elevate your mood throughout the day.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="perfumes" class="perfumes">
+        <h2 class="section-title">Featured Perfumes</h2>
+        <table class="perfume-table">
+            <thead>
+                <tr>
+                    <th>Perfume Name</th>
+                    <th>Scent Family</th>
+                    <th>Longevity</th>
+                    <th>Price Range</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mystic Bloom</td>
+                    <td>Floral</td>
+                    <td>8-10 hours</td>
+                    <td>$85-120</td>
+                </tr>
+                <tr>
+                    <td>Amber Woods</td>
+                    <td>Woody</td>
+                    <td>10-12 hours</td>
+                    <td>$90-135</td>
+                </tr>
+                <tr>
+                    <td>Citrus Zest</td>
+                    <td>Citrus</td>
+                    <td>6-8 hours</td>
+                    <td>$75-110</td>
+                </tr>
+                <tr>
+                    <td>Velvet Rose</td>
+                    <td>Floral Oriental</td>
+                    <td>9-11 hours</td>
+                    <td>$95-140</td>
+                </tr>
+                <tr>
+                    <td>Ocean Breeze</td>
+                    <td>Fresh Aquatic</td>
+                    <td>7-9 hours</td>
+                    <td>$80-125</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    
+    <section id="finder" class="fragrance-finder">
+        <h2 class="section-title">Fragrance Finder & Profile</h2>
+        <div class="finder-container">
+            <div class="finder-form">
+                <h3>Find Your Perfect Scent</h3>
+                <div class="fragrance-form-group">
+                    <label for="scent-family">Preferred Scent Family</label>
+                    <select id="scent-family" class="fragrance-input">
+                        <option value="floral">Floral</option>
+                        <option value="woody">Woody</option>
+                        <option value="oriental">Oriental</option>
+                        <option value="fresh">Fresh</option>
+                        <option value="citrus">Citrus</option>
+                    </select>
+                </div>
+                
+                <div class="fragrance-form-group">
+                    <label>Scent Preferences (1-10)</label>
+                    <div class="scent-input">
+                        <label for="floral-rating">Floral:</label>
+                        <input type="range" id="floral-rating" class="fragrance-input" min="1" max="10" value="5">
+                    </div>
+                    <div class="scent-input">
+                        <label for="woody-rating">Woody:</label>
+                        <input type="range" id="woody-rating" class="fragrance-input" min="1" max="10" value="5">
+                    </div>
+                    <div class="scent-input">
+                        <label for="citrus-rating">Citrus:</label>
+                        <input type="range" id="citrus-rating" class="fragrance-input" min="1" max="10" value="5">
+                    </div>
+                    <div class="scent-input">
+                        <label for="spicy-rating">Spicy:</label>
+                        <input type="range" id="spicy-rating" class="fragrance-input" min="1" max="10" value="5">
+                    </div>
+                    <div class="scent-input">
+                        <label for="sweet-rating">Sweet:</label>
+                        <input type="range" id="sweet-rating" class="fragrance-input" min="1" max="10" value="5">
+                    </div>
+                    <div class="scent-input">
+                        <label for="fresh-rating">Fresh:</label>
+                        <input type="range" id="fresh-rating" class="fragrance-input" min="1" max="10" value="5">
+                    </div>
+                </div>
+                
+                <button id="find-btn" class="find-btn">Analyze Preferences</button>
+                
+                <div id="result-summary" class="result-summary" style="display: none;">
+                    <h4>Your Fragrance Profile</h4>
+                    <div class="result-item">
+                        <span class="result-label">Primary Note:</span>
+                        <span id="primary-note">N/A</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Ideal Strength:</span>
+                        <span id="ideal-strength">N/A</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Recommendation:</span>
+                        <span id="recommendation">N/A</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Matching Score:</span>
+                        <span id="match-score">N/A</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Preference Style:</span>
+                        <span id="preference-style">N/A</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="finder-graphic">
+                <canvas id="fragranceChart" width="400" height="300"></canvas>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact" class="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-form">
+            <form>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" class="form-control" placeholder="How can we help you?" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 NanaPerfume Boutique. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">FAQ</a>
+        </div>
+        <p>Crafted with 💜 for fragrance lovers everywhere</p>
+    </footer>
+
+    <script>
+        // Initialize fragrance finder functionality
+        window.onload = function() {
+            const fragranceChart = document.getElementById('fragranceChart');
+            const findBtn = document.getElementById('find-btn');
+            const resultSummary = document.getElementById('result-summary');
+            
+            let scentProfileChart = null;
+            
+            if (fragranceChart && findBtn) {
+                // Initialize chart with default data
+                scentProfileChart = new Chart(fragranceChart, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Floral', 'Woody', 'Citrus', 'Spicy', 'Sweet', 'Fresh'],
+                        datasets: [{
+                            label: 'Your Scent Profile',
+                            data: [5, 5, 5, 5, 5, 5],
+                            backgroundColor: 'rgba(142, 68, 173, 0.2)',
+                            borderColor: 'rgba(142, 68, 173, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(142, 68, 173, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(142, 68, 173, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Your Fragrance Preference Profile',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 10
+                            }
+                        }
+                    }
+                });
+                
+                // Function to analyze fragrance preferences
+                function analyzePreferences(data) {
+                    // Find primary note (highest rated)
+                    let maxValue = Math.max(...data);
+                    let maxIndex = data.indexOf(maxValue);
+                    
+                    const notes = ['Floral', 'Woody', 'Citrus', 'Spicy', 'Sweet', 'Fresh'];
+                    const primaryNote = notes[maxIndex];
+                    
+                    // Calculate average intensity
+                    const avgIntensity = data.reduce((sum, val) => sum + val, 0) / data.length;
+                    
+                    let idealStrength;
+                    if (avgIntensity < 4) {
+                        idealStrength = 'Light (Eau de Toilette)';
+                    } else if (avgIntensity < 7) {
+                        idealStrength = 'Medium (Eau de Parfum)';
+                    } else {
+                        idealStrength = 'Strong (Parfum)';
+                    }
+                    
+                    // Generate recommendation based on primary note
+                    let recommendation;
+                    switch(primaryNote) {
+                        case 'Floral':
+                            recommendation = 'Mystic Bloom or Velvet Rose';
+                            break;
+                        case 'Woody':
+                            recommendation = 'Amber Woods';
+                            break;
+                        case 'Citrus':
+                            recommendation = 'Citrus Zest';
+                            break;
+                        case 'Fresh':
+                            recommendation = 'Ocean Breeze';
+                            break;
+                        default:
+                            recommendation = 'Consult with our fragrance specialist';
+                    }
+                    
+                    // Calculate matching score (how distinct the profile is)
+                    const variance = data.reduce((sum, val) => sum + Math.pow(val - avgIntensity, 2), 0) / data.length;
+                    const matchScore = Math.min(Math.round((variance + avgIntensity / 2) * 10), 100);
+                    
+                    // Determine preference style
+                    let style;
+                    const floralWoody = data[0] + data[1];
+                    const citrusSpicy = data[2] + data[3];
+                    const sweetFresh = data[4] + data[5];
+                    
+                    if (floralWoody > citrusSpicy && floralWoody > sweetFresh) {
+                        style = 'Classic & Sophisticated';
+                    } else if (citrusSpicy > floralWoody && citrusSpicy > sweetFresh) {
+                        style = 'Bold & Vibrant';
+                    } else {
+                        style = 'Modern & Refreshing';
+                    }
+                    
+                    return {
+                        primaryNote: primaryNote,
+                        idealStrength: idealStrength,
+                        recommendation: recommendation,
+                        matchScore: `${matchScore}%`,
+                        preferenceStyle: style
+                    };
+                }
+                
+                // Event listener for find button
+                findBtn.addEventListener('click', function() {
+                    // Get scent ratings
+                    const floralRating = parseInt(document.getElementById('floral-rating').value);
+                    const woodyRating = parseInt(document.getElementById('woody-rating').value);
+                    const citrusRating = parseInt(document.getElementById('citrus-rating').value);
+                    const spicyRating = parseInt(document.getElementById('spicy-rating').value);
+                    const sweetRating = parseInt(document.getElementById('sweet-rating').value);
+                    const freshRating = parseInt(document.getElementById('fresh-rating').value);
+                    
+                    const ratings = [floralRating, woodyRating, citrusRating, spicyRating, sweetRating, freshRating];
+                    
+                    // Update chart
+                    scentProfileChart.data.datasets[0].data = ratings;
+                    scentProfileChart.update();
+                    
+                    // Analyze and display preferences
+                    const analysis = analyzePreferences(ratings);
+                    
+                    document.getElementById('primary-note').textContent = analysis.primaryNote;
+                    document.getElementById('ideal-strength').textContent = analysis.idealStrength;
+                    document.getElementById('recommendation').textContent = analysis.recommendation;
+                    document.getElementById('match-score').textContent = analysis.matchScore;
+                    document.getElementById('preference-style').textContent = analysis.preferenceStyle;
+                    
+                    // Show results summary
+                    resultSummary.style.display = 'block';
+                });
+            }
+        };
+    </script>
+</body>
+</html>
